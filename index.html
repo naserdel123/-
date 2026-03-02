@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - متجري</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
+<body class="auth-page">
+    <div class="particles" id="particles"></div>
+    
+    <div class="auth-container">
+        <div class="auth-box" data-tilt>
+            <div class="logo-float">
+                <div class="logo-ring"></div>
+                <div class="logo-ring"></div>
+                <div class="logo-ring"></div>
+                <span class="logo-icon">🛒</span>
+            </div>
+            
+            <h1 class="glitch" data-text="متجري">متجري</h1>
+            <p class="subtitle">تسجيل الدخول للمتابعة</p>
+            
+            <form id="loginForm" class="auth-form">
+                <div class="input-group">
+                    <input type="email" id="email" placeholder=" " required>
+                    <label for="email">البريد الإلكتروني</label>
+                    <div class="input-line"></div>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password" placeholder=" " required>
+                    <label for="password">كلمة المرور</label>
+                    <div class="input-line"></div>
+                    <button type="button" class="toggle-password" onclick="togglePassword()">👁</button>
+                </div>
+                
+                <button type="submit" class="btn-primary magnetic">
+                    <span class="btn-text">دخول</span>
+                    <div class="btn-fill"></div>
+                    <div class="spinner hidden"></div>
+                </button>
+            </form>
+            
+            <div id="errorMessage" class="error-message"></div>
+            
+            <div class="auth-footer">
+                <div class="divider">
+                    <span>أو</span>
+                </div>
+                <p>ليس لديك حساب؟ <a href="register.html" class="link-hover">سجل الآن</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // تأثير الجسيمات
+        const particles = document.getElementById('particles');
+        for(let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particles.appendChild(particle);
+        }
+        
+        // تأثير المغناطيسية للأزرار
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+        
+        // إظهار/إخفاء كلمة المرور
+        function togglePassword() {
+            const input = document.getElementById('password');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+    </script>
+</body>
+</html>
