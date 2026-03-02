@@ -1,0 +1,946 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary: #ec4899;
+    --accent: #8b5cf6;
+    --background: #0f0f1a;
+    --surface: #1a1a2e;
+    --card: #16213e;
+    --text: #e2e8f0;
+    --text-light: #94a3b8;
+    --border: rgba(255,255,255,0.1);
+    --success: #10b981;
+    --error: #ef4444;
+    --glass: rgba(255,255,255,0.05);
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* تأثير المؤشر المضيء */
+.cursor-glow {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: all 0.1s ease;
+}
+
+/* تأثير الجسيمات */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-up linear infinite;
+    box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+}
+
+@keyframes float-up {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* صفحة المصادقة */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f0f1a 100%);
+    position: relative;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-box {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    padding: 50px 40px;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), 
+                inset 0 1px 0 rgba(255,255,255,0.1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.auth-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, var(--primary), transparent 30%);
+    animation: rotate 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.auth-box:hover::before {
+    opacity: 0.1;
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+/* تأثير اللوجو العائم */
+.logo-float {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-ring {
+    position: absolute;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    animation: pulse-ring 2s ease-out infinite;
+}
+
+.logo-ring:nth-child(1) { width: 100%; height: 100%; animation-delay: 0s; }
+.logo-ring:nth-child(2) { width: 80%; height: 80%; animation-delay: 0.5s; }
+.logo-ring:nth-child(3) { width: 60%; height: 60%; animation-delay: 1s; }
+
+@keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+.logo-icon {
+    font-size: 36px;
+    z-index: 1;
+    animation: bounce 2s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* تأثير الكتابة المشوهة */
+.glitch {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--text);
+    position: relative;
+    text-shadow: 0.05em 0 0 var(--error), -0.025em -0.05em 0 var(--secondary),
+                 0.025em 0.05em 0 var(--primary);
+    animation: glitch 2s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--error);
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 var(--primary);
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitch-anim2 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch {
+    0% { text-shadow: 0.05em 0 0 var(--error), -0.05em -0.025em 0 var(--secondary),
+                      -0.025em 0.05em 0 var(--primary); }
+    14% { text-shadow: 0.05em 0 0 var(--error), -0.05em -0.025em 0 var(--secondary),
+                       -0.025em 0.05em 0 var(--primary); }
+    15% { text-shadow: -0.05em -0.025em 0 var(--error), 0.025em 0.025em 0 var(--secondary),
+                       -0.05em -0.05em 0 var(--primary); }
+    49% { text-shadow: -0.05em -0.025em 0 var(--error), 0.025em 0.025em 0 var(--secondary),
+                       -0.05em -0.05em 0 var(--primary); }
+    50% { text-shadow: 0.025em 0.05em 0 var(--error), 0.05em 0 0 var(--secondary),
+                       0 -0.05em 0 var(--primary); }
+    99% { text-shadow: 0.025em 0.05em 0 var(--error), 0.05em 0 0 var(--secondary),
+                       0 -0.05em 0 var(--primary); }
+    100% { text-shadow: -0.025em 0 0 var(--error), -0.025em -0.025em 0 var(--secondary),
+                        -0.025em -0.05em 0 var(--primary); }
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(10px, 9999px, 85px, 0); }
+    20% { clip: rect(63px, 9999px, 130px, 0); }
+    40% { clip: rect(25px, 9999px, 15px, 0); }
+    60% { clip: rect(88px, 9999px, 95px, 0); }
+    80% { clip: rect(45px, 9999px, 60px, 0); }
+    100% { clip: rect(15px, 9999px, 110px, 0); }
+}
+
+@keyframes glitch-anim2 {
+    0% { clip: rect(65px, 9999px, 100px, 0); }
+    20% { clip: rect(20px, 9999px, 45px, 0); }
+    40% { clip: rect(90px, 9999px, 120px, 0); }
+    60% { clip: rect(35px, 9999px, 75px, 0); }
+    80% { clip: rect(15px, 9999px, 50px, 0); }
+    100% { clip: rect(80px, 9999px, 140px, 0); }
+}
+
+.subtitle {
+    color: var(--text-light);
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* حقول الإدخال العائمة */
+.input-group {
+    position: relative;
+    margin-bottom: 30px;
+    text-align: right;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.03);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-size: 16px;
+    color: var(--text);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-group label {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background: var(--card);
+    padding: 0 8px;
+}
+
+.input-group input:focus,
+.input-group input:not(:placeholder-shown),
+.input-group textarea:focus,
+.input-group textarea:not(:placeholder-shown) {
+    border-color: var(--primary);
+    background: rgba(99,102,241,0.05);
+}
+
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label,
+.input-group textarea:focus ~ label,
+.input-group textarea:not(:placeholder-shown) ~ label {
+    top: 0;
+    font-size: 12px;
+    color: var(--primary);
+}
+
+.input-line {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.input-group input:focus ~ .input-line,
+.input-group textarea:focus ~ .input-line {
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+/* شريط قوة كلمة المرور */
+.strength-meter {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--error);
+    transition: all 0.3s;
+    border-radius: 0 0 0 12px;
+}
+
+/* الأزرار المغناطيسية */
+.btn-primary,
+.btn-logout,
+.btn-back,
+.btn-add,
+.btn-publish {
+    position: relative;
+    padding: 16px 32px;
+    background: transparent;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    box-shadow: 0 4px 15px rgba(99,102,241,0.4);
+}
+
+.btn-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -1;
+}
+
+.btn-primary:hover .btn-fill,
+.btn-logout:hover .btn-fill,
+.btn-back:hover .btn-fill,
+.btn-add:hover .btn-fill,
+.btn-publish:hover .btn-fill {
+    opacity: 1;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99,102,241,0.6);
+}
+
+/* spinner التحميل */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* رسائل الخطأ والنجاح */
+.error-message {
+    color: var(--error);
+    margin-top: 15px;
+    font-size: 14px;
+    padding: 10px;
+    background: rgba(239,68,68,0.1);
+    border-radius: 8px;
+    border-right: 3px solid var(--error);
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.success-message {
+    background: rgba(16,185,129,0.1);
+    color: var(--success);
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 20px;
+    border-right: 3px solid var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    animation: slideDown 0.5s ease;
+}
+
+.success-icon {
+    width: 24px;
+    height: 24px;
+    background: var(--success);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
+/* الفاصل */
+.divider {
+    position: relative;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+.divider span {
+    background: var(--card);
+    padding: 0 15px;
+    color: var(--text-light);
+    font-size: 14px;
+    position: relative;
+}
+
+/* الروابط */
+.link-hover {
+    color: var(--primary);
+    text-decoration: none;
+    position: relative;
+    font-weight: bold;
+}
+
+.link-hover::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.3s;
+}
+
+.link-hover:hover::after {
+    width: 100%;
+}
+
+/* Navbar */
+.navbar {
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.glass {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo-bounce {
+    font-size: 28px;
+    display: inline-block;
+    animation: bounce 2s ease infinite;
+}
+
+.brand-text {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+}
+
+.btn-logout,
+.btn-back {
+    padding: 10px 24px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.05);
+}
+
+/* المحتوى الرئيسي */
+.main-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.reveal-text {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, var(--text), var(--text-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.reveal-text.delay {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    animation-delay: 0.2s;
+}
+
+/* مربع البحث */
+.search-box {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 14px 45px 14px 20px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    color: var(--text);
+    font-size: 15px;
+    transition: all 0.3s;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+}
+
+.search-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+}
+
+/* الهيدر */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 20px;
+}
+
+/* زر الإضافة */
+.btn-add {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    padding: 14px 28px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.4);
+}
+
+.plus-icon {
+    font-size: 20px;
+    transition: transform 0.3s;
+}
+
+.btn-add:hover .plus-icon {
+    transform: rotate(90deg);
+}
+
+/* شبكة المنتجات */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.product-card {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.product-card:nth-child(1) { animation-delay: 0.1s; }
+.product-card:nth-child(2) { animation-delay: 0.2s; }
+.product-card:nth-child(3) { animation-delay: 0.3s; }
+.product-card:nth-child(4) { animation-delay: 0.4s; }
+
+.product-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    border-color: rgba(99,102,241,0.3);
+}
+
+.product-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.1);
+}
+
+.product-info {
+    padding: 25px;
+}
+
+.product-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.product-price {
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.product-desc {
+    color: var(--text-light);
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.btn-buy {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.btn-buy::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-buy:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-buy:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(16,185,129,0.4);
+}
+
+/* skeleton loading */
+.loading-skeleton {
+    display: contents;
+}
+
+.skeleton-card {
+    background: var(--glass);
+    height: 350px;
+    border-radius: 20px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+/* صفحة الإدمن */
+.admin-content {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.form-container {
+    padding: 40px;
+    border-radius: 24px;
+    position: relative;
+}
+
+.form-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.form-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.3s;
+}
+
+/* رفع الصور */
+.image-upload-group {
+    margin-bottom: 30px;
+}
+
+.image-upload {
+    position: relative;
+    cursor: pointer;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.image-preview {
+    height: 250px;
+    background: rgba(255,255,255,0.03);
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.image-upload:hover .image-preview,
+.image-upload.drag-active .image-preview {
+    border-color: var(--primary);
+    background: rgba(99,102,241,0.05);
+}
+
+.upload-placeholder {
+    text-align: center;
+    color: var(--text-light);
+}
+
+.upload-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: fadeIn 0.5s;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.image-upload:hover .image-overlay {
+    opacity: 1;
+}
+
+/* حقول النموذج العائمة */
+.form-group.floating {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.form-group.floating input,
+.form-group.floating textarea {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.03);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.form-group.floating label {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    pointer-events: none;
+    transition: all 0.3s;
+    background: var(--card);
+    padding: 0 8px;
+}
+
+.form-group.floating textarea ~ label {
+    top: 30px;
+}
+
+.form-group.floating input:focus ~ label,
+.form-group.floating input:not(:placeholder-shown) ~ label,
+.form-group.floating textarea:focus ~ label,
+.form-group.floating textarea:not(:placeholder-shown) ~ label {
+    top: 0;
+    font-size: 12px;
+    color: var(--primary);
+}
+
+.btn-publish {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    margin-top: 10px;
+}
+
+.
