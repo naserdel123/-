@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب - متجري</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1>إنشاء حساب</h1>
+            <p>سجل الآن وابدأ التسوق</p>
+            
+            <form id="registerForm">
+                <div class="input-group">
+                    <input type="text" id="fullName" placeholder="الاسم الكامل" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="كلمة المرور (6 أحرف على الأقل)" required minlength="6">
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required>
+                </div>
+                
+                <button type="submit" id="registerBtn">إنشاء الحساب</button>
+            </form>
+            
+            <div id="errorMessage" style="color: red; margin-top: 10px;"></div>
+            <div id="successMessage" style="color: green; margin-top: 10px;"></div>
+            
+            <div style="margin-top: 20px;">
+                <p>لديك حساب بالفعل؟ <a href="index.html">تسجيل الدخول</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Config -->
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Register Script -->
+    <script>
+        console.log("Register page loaded");
+        
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log("Register form submitted");
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const btn = document.getElementById('registerBtn');
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            
+            // التحقق من تطابق كلمة المرور
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'كلمة المرور غير متطابقة';
+                return;
+            }
+            
+            btn.textContent = 'جاري إنشاء الحساب...';
+            btn.disabled = true;
+            errorDiv.textContent = '';
+            
+            console.log("Creating account for:", email);
+            
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // تحديث الاسم
+                    return userCredential.user.updateProfile({
+                        displayName: fullName
+                    });
+                })
+                .then(() => {
+                    console.log("Account created!");
+                    successDiv.textContent = 'تم إنشاء الحساب بنجاح! جاري التحويل...';
+                    // الانتقال للرئيسية
+                    window.location.href = 'home.html';
+                })
+                .catch((error) => {
+                    console.error("Register error:", error);
+                    btn.textContent = 'إنشاء الحساب';
+                    btn.disabled = false;
+                    
+                    const errors = {
+                        'auth/email-already-in-use': 'البريد مستخدم بالفعل',
+                        'auth/invalid-email': 'البريد الإلكتروني غير صالح',
+                        'auth/weak-password': 'كلمة المرور ضعيفة (6 أحرف على الأقل)',
+                        'auth/operation-not-allowed': 'التسجيل معطل حالياً'
+                    };
+                    errorDiv.textContent = errors[error.code] || error.message;
+                });
+        });
+    </script>
+</body>
+</html>
